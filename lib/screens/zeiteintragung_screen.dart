@@ -201,7 +201,7 @@ class _Zeiteintrag_ScreenState extends State<Zeiteintrag_Screen> {
         _isPressedButton2 = true; // Button 2 wird gedrückt
       }
     });
-    ;
+
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         if (buttonIndex == 1) {

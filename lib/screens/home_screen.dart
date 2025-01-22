@@ -95,8 +95,8 @@ class _HomeScreen extends State<HomeScreen> with SingleTickerProviderStateMixin 
           backgroundColor: Colors.teal,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 100),
+      body: SingleChildScrollView(
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 48, 0, 100),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
