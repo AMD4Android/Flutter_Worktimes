@@ -159,7 +159,22 @@ class _Zeiteintrag_ScreenState extends State<Zeiteintrag_Screen> {
   // Berechnung der Differenz zwischen Startzeit und Endzeit
   String calculateTimeDifference() {
     if (endTimeEntry != "") {
-      Duration difference = selectedEndTime.difference(selectedStartTime);
+      Duration difference;
+
+      // Spezielle Berechnung für Nachtschichten
+      if (shiftType == 'Night') {
+        // Wenn die Endzeit vor der Startzeit liegt (über Mitternacht hinaus)
+        if (selectedEndTime.isBefore(selectedStartTime)) {
+          // Addiere einen Tag zur Endzeit
+          DateTime adjustedEndTime = selectedEndTime.add(Duration(days: 1));
+          difference = adjustedEndTime.difference(selectedStartTime);
+        } else {
+          difference = selectedEndTime.difference(selectedStartTime);
+        }
+      } else {
+        // Normale Berechnung für andere Schichttypen
+        difference = selectedEndTime.difference(selectedStartTime);
+      }
 
       // Pausenzeit in Minuten basierend auf dem Schichttyp
       int breakMinutes = 0;
@@ -172,15 +187,14 @@ class _Zeiteintrag_ScreenState extends State<Zeiteintrag_Screen> {
       }
 
       // Arbeitszeit abzüglich Pausenzeit
-//    Duration adjustedDifference = difference - Duration(minutes: breakMinutes);
       Duration adjustedDifference;
 
       if (difference > const Duration(hours: 6)) {
         adjustedDifference = difference - Duration(minutes: breakMinutes);
       } else {
-        adjustedDifference =
-            difference; // oder eine andere Logik, falls gewünscht
+        adjustedDifference = difference; // oder eine andere Logik, falls gewünscht
       }
+
       // Berechne Stunden und Minuten aus der angepassten Differenz
       int hours = adjustedDifference.inHours;
       int minutes = adjustedDifference.inMinutes % 60;
@@ -190,7 +204,6 @@ class _Zeiteintrag_ScreenState extends State<Zeiteintrag_Screen> {
     } else {
       return "00h:00m";
     }
-    // Berechne die Zeitdifferenz zwischen Start- und Endzeit
   }
 
   void handlePress(int buttonIndex) {
